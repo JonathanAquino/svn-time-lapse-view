@@ -96,7 +96,7 @@ public class ApplicationWindow extends JFrame {
 		initialize();
 		addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (filePathOrUrl != null) { load(filePathOrUrl, username, password, limit); }
 					}
@@ -138,7 +138,7 @@ public class ApplicationWindow extends JFrame {
 	private void initializeSlider() {
 		final Timer changeRevisionTimer = MiscHelper.createQuiescenceTimer(50, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						loadRevision();
 					}
@@ -162,7 +162,7 @@ public class ApplicationWindow extends JFrame {
 		nextButton.setToolTipText("Next Revision (Alt+\u21E8)");
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (slider.getValue() > 0) { slider.setValue(slider.getValue() - 1); }
 					}
@@ -171,7 +171,7 @@ public class ApplicationWindow extends JFrame {
 		);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (slider.getValue() < slider.getMaximum()) { slider.setValue(slider.getValue() + 1); }
 					};
@@ -198,7 +198,7 @@ public class ApplicationWindow extends JFrame {
 	    parentPanel.add(scrollPane);
 	    scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(final AdjustmentEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						setHorizontalScrollBarValue(e.getValue());
 						freezeHorizontalScrollBarsDuring(new Closure() {
@@ -212,7 +212,7 @@ public class ApplicationWindow extends JFrame {
 	    });
 	    scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(final AdjustmentEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						setVerticalScrollBarValue(e.getValue());
 						freezeVerticalScrollBarsDuring(new Closure() {
@@ -236,7 +236,7 @@ public class ApplicationWindow extends JFrame {
 		if (configuration.getBoolean("maximized", false)) { GuiHelper.maximize(this); }
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentMoved(ComponentEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (GuiHelper.minimized(ApplicationWindow.this)) { return; }
 						if (GuiHelper.maximized(ApplicationWindow.this)) { return; }
@@ -246,7 +246,7 @@ public class ApplicationWindow extends JFrame {
 				});
 			}
 			public void componentResized(ComponentEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (GuiHelper.minimized(ApplicationWindow.this)) { return; }
 						if (GuiHelper.maximized(ApplicationWindow.this)) {
@@ -292,7 +292,7 @@ public class ApplicationWindow extends JFrame {
 			public void execute() throws Exception {
 				GuiHelper.invokeOnEventThread(new Runnable() {
 					public void run() {
-						MiscHelper.handleExceptions(new Closure() {
+						MiscHelper.handleThrowables(new Closure() {
 							public void execute() throws Exception {
 								setTitle(filePathOrUrl);
 								setHorizontalScrollBarValue(0);

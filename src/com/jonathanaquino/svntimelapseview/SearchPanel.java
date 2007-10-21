@@ -50,7 +50,7 @@ public class SearchPanel extends JPanel {
 		add(searchButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (searcher != null && searcher.search(searchTextField.getText().trim())) {
 							applicationWindow.highlight(searcher.getSide(), searcher.getPosition(), searchTextField.getText().trim().length());
@@ -62,7 +62,7 @@ public class SearchPanel extends JPanel {
 		showDifferencesOnlyCheckbox.setSelected(applicationWindow.getApplication().getConfiguration().getBoolean("showDifferencesOnly", true));
 		showDifferencesOnlyCheckbox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						applicationWindow.getApplication().getConfiguration().setBoolean("showDifferencesOnly", isShowingDifferencesOnly());
 						applicationWindow.loadRevision();
@@ -80,7 +80,7 @@ public class SearchPanel extends JPanel {
 		nextButton.setToolTipText("Next Difference (Alt+\u21E9)");
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (currentDiff == null || currentDiff.getDifferencePositions().size() == 0) { return; }
 						differenceIndex = previousDiffIndex(differenceIndex, currentDiff.getDifferencePositions().size());
@@ -91,7 +91,7 @@ public class SearchPanel extends JPanel {
 		);
 		nextButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						if (currentDiff == null || currentDiff.getDifferencePositions().size() == 0) { return; }
 						differenceIndex = nextDiffIndex(differenceIndex, currentDiff.getDifferencePositions().size());

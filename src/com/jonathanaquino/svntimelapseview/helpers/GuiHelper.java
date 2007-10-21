@@ -114,7 +114,7 @@ public class GuiHelper {
     public static JTextField pressOnEnterKey(JTextField textField, final JButton button) {
     	textField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						button.doClick();
 					}
@@ -136,7 +136,7 @@ public class GuiHelper {
 		ActionMap actionMap = new ActionMapUIResource();
 		actionMap.put("action", new AbstractAction() {
 			public void actionPerformed(ActionEvent arg0) {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						button.doClick();
 					}

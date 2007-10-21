@@ -25,7 +25,7 @@ public class Configuration {
     /** An object that, when triggered, saves the file when triggerings have "quieted down" for 1 second. */
     private Timer saveTimer = MiscHelper.createQuiescenceTimer(1000, new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            MiscHelper.handleExceptions(new Closure() {
+            MiscHelper.handleThrowables(new Closure() {
                 public void execute() throws Exception {
                     save();
                 }

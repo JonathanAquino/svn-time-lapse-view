@@ -58,7 +58,7 @@ public class SvnLoader {
 		cancelled = false;
 		Thread thread = new Thread(new Runnable() {
 			public void run() {
-				MiscHelper.handleExceptions(new Closure() {
+				MiscHelper.handleThrowables(new Closure() {
 					public void execute() throws Exception {
 						loadRevisionsProper(filePathOrUrl, username, password, limit, afterLoad);
 					}

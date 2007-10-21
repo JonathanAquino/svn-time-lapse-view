@@ -79,7 +79,7 @@ public class LoadPanel extends JPanel {
         JButton stopButton = new JButton("Stop");
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MiscHelper.handleExceptions(new Closure() {
+                MiscHelper.handleThrowables(new Closure() {
                     public void execute() throws Exception {
                         applicationWindow.getApplication().getLoader().cancel();
                     }
@@ -115,7 +115,7 @@ public class LoadPanel extends JPanel {
         fieldPanel.add(limitField);
         loadButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MiscHelper.handleExceptions(new Closure() {
+                MiscHelper.handleThrowables(new Closure() {
                     public void execute() throws Exception {
                         applicationWindow.load(urlField.getText(), usernameField.getText(), String.valueOf(passwordField.getPassword()), Integer.parseInt(limitField.getText()));
                         showProgressPanel();
@@ -133,7 +133,7 @@ public class LoadPanel extends JPanel {
         button.setMargin(new Insets(0, 2, 0, 2));
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MiscHelper.handleExceptions(new Closure() {
+                MiscHelper.handleThrowables(new Closure() {
                     public void execute() throws Exception {
                         File directory = new File(urlField.getText()).getParentFile();
                         if (directory != null && directory.exists()) { getFileChooser().setCurrentDirectory(directory); }
@@ -168,7 +168,7 @@ public class LoadPanel extends JPanel {
         final SvnLoader loader = applicationWindow.getApplication().getLoader();
         final Timer timer = new Timer(500, new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
-                MiscHelper.handleExceptions(new Closure() {
+                MiscHelper.handleThrowables(new Closure() {
                     public void execute() throws Exception {
                         if (! loader.isLoading()) {
                             updateProgressPanel();

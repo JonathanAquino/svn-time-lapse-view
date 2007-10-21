@@ -22,7 +22,10 @@ public class Application {
 	 * Launches the application.
 	 */
 	public static void main(String[] args) throws Exception {
-		initializeLookAndFeel();
+		// See Kohsuke Kawaguchi, "We deserve a better proxy support!", 
+		// http://weblogs.java.net/blog/kohsuke/archive/2005/08/we_deserve_a_be.html  [Jon Aquino 2007-10-20]
+		System.setProperty("java.net.useSystemProxies", "true");
+		initializeLookAndFeel();		
         CmdLineParser parser = new CmdLineParser();
         CmdLineParser.Option usernameOption = parser.addStringOption("username");
         CmdLineParser.Option passwordOption = parser.addStringOption("password");

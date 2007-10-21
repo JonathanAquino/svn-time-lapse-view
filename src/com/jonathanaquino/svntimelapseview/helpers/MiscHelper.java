@@ -3,6 +3,7 @@ package com.jonathanaquino.svntimelapseview.helpers;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.Timer;
 
@@ -19,23 +20,32 @@ public class MiscHelper {
      *
      * @param closure  a closure (anonymous function)
      */
-    public static void handleExceptions(Closure closure) {
+    public static void handleThrowables(Closure closure) {
         try {
             closure.execute();
         } catch (final Throwable t) {
             t.printStackTrace(System.err);
-            try {
-                GuiHelper.invokeOnEventThread(new Runnable() {
-                    public void run() {
-                        errorWindow().setText(stackTrace(t));
-                        errorWindow().setVisible(true);
-                    }
-                });
-            } catch (Throwable t2) {
-                t2.printStackTrace(System.err);
-            }
+            handleThrowable(t);
         }
     }
+
+	/**
+	 * Deals with an uncaught throwable.
+	 * 
+	 * @param t  the exception or throwable
+	 */
+	public static void handleThrowable(final Throwable t) {
+        try {
+			GuiHelper.invokeOnEventThread(new Runnable() {
+			    public void run() {
+			        errorWindow().setText(stackTrace(t));
+			        errorWindow().setVisible(true);
+			    }
+			});
+        } catch (Throwable t2) {
+            t2.printStackTrace(System.err);
+        }
+	}
 
     private static ErrorWindow errorWindow;
 
