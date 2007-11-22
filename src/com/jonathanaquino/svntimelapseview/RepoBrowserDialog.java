@@ -1,6 +1,7 @@
 package com.jonathanaquino.svntimelapseview;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.ScrollPane;
 import java.awt.event.MouseAdapter;
@@ -20,7 +21,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTree;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
@@ -45,6 +48,10 @@ public class RepoBrowserDialog extends JDialog {
 	private JScrollPane scrollPane;
 	private ApplicationWindow applicationWindow;
 
+	/**
+	 * Constructs a new dialog (modal) that shows a repository
+	 * @param frame
+	 */
 	public RepoBrowserDialog(Frame frame) {
 		super(frame, "Repository browser", true);
 		applicationWindow = (ApplicationWindow)frame;
@@ -60,6 +67,8 @@ public class RepoBrowserDialog extends JDialog {
 		this.password = password;
 		this.repoUrl = repoUrl;
 		repoTree = new JTree();
+		repoTree.setCellRenderer(new SVNTreeRenderer());
+		
 		MouseListener ml = new MouseAdapter() {
 		     public void mousePressed(MouseEvent e) {
 		         int selRow = repoTree.getRowForLocation(e.getX(), e.getY());
@@ -85,6 +94,7 @@ public class RepoBrowserDialog extends JDialog {
 		this.setVisible(true);
 	}
 	
+	// TODO: We need this a central place
 	private SVNRepository getRepository(String url, String username, String password) {
 		try {
 			DAVRepositoryFactory.setup();
@@ -244,10 +254,35 @@ public class RepoBrowserDialog extends JDialog {
 			else {
 				return obj1.getSVNDirEntry().getName().compareTo(obj2.getSVNDirEntry().getName());
 			}
-		}
-		
+		}	
 	}
 	
-	
-	
+	private static class SVNTreeRenderer extends DefaultTreeCellRenderer {
+        public SVNTreeRenderer() {
+        }
+
+        public Component getTreeCellRendererComponent(
+                            JTree tree,
+                            Object value,
+                            boolean sel,
+                            boolean expanded,
+                            boolean leaf,
+                            int row,
+                            boolean hasFocus) {
+
+            super.getTreeCellRendererComponent(
+                            tree, value, sel,
+                            expanded, leaf, row,
+                            hasFocus);
+            
+            SVNNode node = (SVNNode)value;
+            
+            if (node.getSVNDirEntry().getKind() == SVNNodeKind.DIR) {
+            	if (expanded) setIcon(openIcon);
+            	else setIcon(closedIcon);
+            }
+            
+            return this;
+        }
+    }
 }
