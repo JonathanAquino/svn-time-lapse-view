@@ -98,6 +98,7 @@ public class LoadPanel extends JPanel {
      */
     private void initializeFieldPanel() {
         final Configuration configuration = applicationWindow.getApplication().getConfiguration();
+        final RepoBrowserDialog repoBrowserDialog = new RepoBrowserDialog(applicationWindow);
         JLabel urlLabel = new JLabel("File Path/URL:");
         urlLabel.setToolTipText("The file path or URL, e.g., http://svn.svnkit.com/repos/svnkit/trunk/www/license.html");
         fieldPanel.add(urlLabel);
@@ -132,7 +133,6 @@ public class LoadPanel extends JPanel {
     		public void actionPerformed(ActionEvent e) {
     			MiscHelper.handleExceptions(new Closure() {
                     public void execute() throws Exception {
-                        RepoBrowserDialog repoBrowserDialog = new RepoBrowserDialog(applicationWindow);
                         repoBrowserDialog.load(urlField.getText(), usernameField.getText(), new String(passwordField.getPassword()));
                     }
                 });
