@@ -3,6 +3,7 @@ package com.jonathanaquino.svntimelapseview;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.Panel;
 import java.awt.ScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -47,6 +48,7 @@ public class RepoBrowserDialog extends JDialog {
 	private String password;
 	private JScrollPane scrollPane;
 	private ApplicationWindow applicationWindow;
+        private SVNRepository repository;
 
 	/**
 	 * Constructs a new dialog (modal) that shows a repository
@@ -88,12 +90,74 @@ public class RepoBrowserDialog extends JDialog {
 		};
 		repoTree.addMouseListener(ml);
 		 
-		SVNTreeModel treeModel = new SVNTreeModel(getRepository(repoUrl, userName, password));
+                repository = getRepository(repoUrl, userName, password);
+		SVNTreeModel treeModel = new SVNTreeModel(repository);
 		repoTree.setModel(treeModel);
 		scrollPane.setViewportView(repoTree);
+                
+                makeUrlVisible(repoUrl);
 		this.setVisible(true);
-	}
+        }
 	
+        private void makeUrlVisible(String repoUrl) {
+            TreePath path = getSVNNodePathFromUrl(repoUrl);
+            if (path != null) {
+                repoTree.scrollPathToVisible(path);
+                repoTree.setSelectionPath(path);
+            }
+        }
+        
+        private TreePath getSVNNodePathFromUrl(String repoUrl) {
+            SVNNode root = (SVNNode)repoTree.getModel().getRoot();
+            TreePath path = new TreePath(root);
+            if (repoUrl.startsWith(root.toString())) {
+                String restOfUrl = getRestOfUrl(root, repoUrl);
+                return getSVNNodePathFromUrl(restOfUrl, root, path);
+            }
+            
+            return null;
+        }
+        
+        private TreePath getSVNNodePathFromUrl(String repoUrl, SVNNode node, TreePath path) {
+            //repoTree.
+            List children = node.getChildren();
+            if (children != null) {
+                SVNNode child = null;
+                for (Iterator iter = children.iterator(); iter.hasNext() ; ) {
+                     child = (SVNNode)iter.next();
+                     if (repoUrl.startsWith(child.toString())) {
+                         TreePath newPath = path.pathByAddingChild(child);
+                         String restOfUrl = getRestOfUrl(child, repoUrl);
+                         if (restOfUrl.length() != 0) {
+                             return getSVNNodePathFromUrl(restOfUrl, child, newPath);
+                         }
+                         else {
+                             return newPath;
+                         }
+                     }
+                }
+            }
+            else {
+                node.loadChildren(repository);
+                if (node.getChildren() != null) {
+                    return getSVNNodePathFromUrl(repoUrl, node, path);
+                }
+                else {
+                    return path.pathByAddingChild(node);
+                }
+            }
+            
+            return path;
+        }
+        
+        private String getRestOfUrl(SVNNode node, String repoUrl) {
+            String restOfUrl = repoUrl.substring(node.toString().length());
+            if (restOfUrl.startsWith("/")) {
+                restOfUrl = restOfUrl.substring(1);
+            }
+            return restOfUrl;
+        }
+        
 	// TODO: We need this a central place
 	private SVNRepository getRepository(String url, String username, String password) {
 		try {
