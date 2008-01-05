@@ -119,7 +119,6 @@ public class RepoBrowserDialog extends JDialog {
         }
         
         private TreePath getSVNNodePathFromUrl(String repoUrl, SVNNode node, TreePath path) {
-            //repoTree.
             List children = node.getChildren();
             if (children != null) {
                 SVNNode child = null;
