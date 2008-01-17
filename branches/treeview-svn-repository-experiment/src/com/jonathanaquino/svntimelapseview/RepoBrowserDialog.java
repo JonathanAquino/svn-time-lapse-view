@@ -53,7 +53,7 @@ public class RepoBrowserDialog extends JDialog {
         add(scrollPane, BorderLayout.CENTER);
     }
     
-    public void load(String repoUrl, final String userName, final String password) {
+    public void load(String repoUrl, final String userName, final String password, final boolean rememberPassword, final int limit) {
         repoTree = new JTree();
         repoTree.setCellRenderer(new SVNTreeRenderer());
         MouseListener ml = new MouseAdapter() {
@@ -64,7 +64,7 @@ public class RepoBrowserDialog extends JDialog {
                      if (e.getClickCount() == 2) {
                          SVNNode selectedNode = (SVNNode)selPath.getLastPathComponent();
                          try {
-                            applicationWindow.load(selectedNode.getSVNDirEntry().getURL().toString(), userName, password, 100);
+                            applicationWindow.load(selectedNode.getSVNDirEntry().getURL().toString(), userName, password, rememberPassword, limit);
                             setVisible(false);
                         } catch (Exception e1) {
                             throw new RuntimeException(e1);

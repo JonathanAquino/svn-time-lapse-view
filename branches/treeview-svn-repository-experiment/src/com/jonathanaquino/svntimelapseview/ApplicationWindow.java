@@ -100,7 +100,7 @@ public class ApplicationWindow extends JFrame {
             public void componentShown(ComponentEvent e) {
                 MiscHelper.handleExceptions(new Closure() {
                     public void execute() throws Exception {
-                        if (filePathOrUrl != null) { load(filePathOrUrl, username, password, limit); }
+                        if (filePathOrUrl != null) { load(filePathOrUrl, username, password, false, limit); }
                     }
                 });
             }
@@ -288,9 +288,10 @@ public class ApplicationWindow extends JFrame {
      * @param filePathOrUrl  Subversion URL or working-copy file path
      * @param username  username, or an empty string for anonymous
      * @param password  password, or an empty string for anonymous
+     * @param rememberPassword  whether to save the password
      * @param limit  maximum number of revisions to download
      */
-    public void load(final String filePathOrUrl, final String username, final String password, final int limit) throws Exception {
+    public void load(final String filePathOrUrl, final String username, final String password, final boolean rememberPassword, final int limit) throws Exception {
         application.load(filePathOrUrl, username, password, limit, new Closure() {
             public void execute() throws Exception {
                 GuiHelper.invokeOnEventThread(new Runnable() {
@@ -302,6 +303,8 @@ public class ApplicationWindow extends JFrame {
                                 setVerticalScrollBarValue(0);
                                 application.getConfiguration().set("url", filePathOrUrl);
                                 application.getConfiguration().set("username", username);
+                                application.getConfiguration().set("password", rememberPassword ? password : "");
+                                application.getConfiguration().setBoolean("rememberPassword", rememberPassword);
                                 application.getConfiguration().setInt("limit", limit);
                                 loadPanel.read(application.getConfiguration());
                                 slider.setMinimum(1);
