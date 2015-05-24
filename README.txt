@@ -1,3 +1,5 @@
+(Also see Git Time Lapse View at https://github.com/JonathanAquino/git-time-lapse-view )
+
 This is a README.txt file for the SVN Time-Lapse View revision browser.
 
 
